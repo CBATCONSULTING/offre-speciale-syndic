@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <!-- VERSION: v1.0.4 - 2026-03-25 - EmailJS + PJ + versioning -->
+    <!-- VERSION: v1.0.5 - 2026-03-25 - badge visible + message poids PJ plus clair -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DECIF & CHALLENGE BAT</title>
@@ -183,7 +183,7 @@
                 <div>
                   <label for="attachment" class="mb-2 block text-sm font-medium text-slate-700">Pièces jointes</label>
                   <input id="attachment" type="file" accept="image/*,.pdf" multiple class="block w-full text-sm text-slate-600 file:mr-4 file:rounded-2xl file:border-0 file:bg-slate-900 file:px-4 file:py-3 file:text-sm file:font-medium file:text-white hover:file:opacity-90" />
-                  <div id="attachment-summary" class="mt-2 text-xs text-slate-500">Vous pouvez joindre jusqu’à 3 fichiers. Les images sont compressées avant l’envoi. Les PDF restent limités par la taille totale.</div>
+                  <div id="attachment-summary" class="mt-2 text-xs text-slate-500">Vous pouvez joindre jusqu’à 3 fichiers. Les images sont compressées avant l’envoi. Pour rester fiable avec EmailJS, visez plutôt moins de 220 Ko au total après préparation.</div>
                   <div id="emailjs-attachments" class="hidden"></div>
                 </div>
                 <div class="flex flex-wrap gap-3 pt-2">
@@ -202,7 +202,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-      const APP_VERSION = "v1.0.4";
+      const APP_VERSION = "v1.0.5";
       console.log("App version:", APP_VERSION);
     </script>
     <script>
@@ -219,7 +219,7 @@
       const filesNotice = document.getElementById("files_notice");
 
       const MAX_FILES = 3;
-      const MAX_TOTAL_BYTES = 480 * 1024;
+      const MAX_TOTAL_BYTES = 220 * 1024;
       const MAX_IMAGE_SIDE = 1600;
       const IMAGE_QUALITY = 0.72;
 
@@ -353,7 +353,7 @@
         }
 
         filesNotice.value = normalized.map((file) => `${file.name} (${bytesToKo(file.size)} Ko)`).join(", ");
-        attachmentSummary.textContent = `${normalized.length} fichier(s) prêt(s) pour l’envoi - poids total : ${bytesToKo(totalBytes)} Ko.`;
+        attachmentSummary.textContent = `${normalized.length} fichier(s) prêt(s) pour l’envoi - poids total encodé : ${bytesToKo(totalBytes)} Ko. Recommandé : rester sous ${bytesToKo(MAX_TOTAL_BYTES)} Ko.`;
         return normalized;
       }
 
@@ -367,13 +367,13 @@
             attachmentInput.value = "";
             emailjsAttachments.innerHTML = "";
             filesNotice.value = "Aucune pièce jointe";
-            attachmentSummary.textContent = "Vous pouvez joindre jusqu’à 3 fichiers. Les images sont compressées avant l’envoi. Les PDF restent limités par la taille totale.";
+            attachmentSummary.textContent = "Vous pouvez joindre jusqu’à 3 fichiers. Les images sont compressées avant l’envoi. Pour rester fiable avec EmailJS, visez plutôt moins de 220 Ko au total après préparation.";
             return;
           }
 
           await prepareEmailjsAttachments(files);
           if (files.length) {
-            showStatus("Pièces jointes prêtes pour l’envoi.", "success");
+            showStatus(`Pièces jointes prêtes. Gardez idéalement moins de ${bytesToKo(MAX_TOTAL_BYTES)} Ko pour éviter un refus EmailJS.`, "success")
           } else {
             status.classList.add("hidden");
           }
@@ -382,8 +382,8 @@
           emailjsAttachments.innerHTML = "";
           filesNotice.value = "Aucune pièce jointe";
           if (error.message === "TOTAL_TOO_LARGE") {
-            showStatus("Les pièces jointes sont trop lourdes. Réduisez leur taille ou envoyez-les par email direct.", "error");
-            attachmentSummary.textContent = `Poids total maximal conseillé : ${bytesToKo(MAX_TOTAL_BYTES)} Ko.`;
+            showStatus("Les pièces jointes sont trop lourdes pour EmailJS après encodage. Essayez une image plus légère ou un PDF plus petit.", "error");
+            attachmentSummary.textContent = `Poids total maximal conseillé après préparation : ${bytesToKo(MAX_TOTAL_BYTES)} Ko. Les PDF grossissent encore à l’envoi.`;
           } else {
             showStatus("Impossible de préparer les pièces jointes.", "error");
           }
@@ -413,7 +413,7 @@
         } catch (error) {
           console.error(error);
           if (error.message === "TOTAL_TOO_LARGE") {
-            showStatus("Les pièces jointes sont trop lourdes pour EmailJS. Réduisez leur taille ou utilisez le bouton email.", "error");
+            showStatus("Les pièces jointes sont trop lourdes pour EmailJS après encodage. Réduisez leur taille ou utilisez le bouton email.", "error");
           } else {
             showStatus("Erreur lors de l’envoi. Vérifiez le template EmailJS et la taille des pièces jointes.", "error");
           }
@@ -423,8 +423,8 @@
         }
       });
     </script>
-      <div style="position:fixed;bottom:10px;right:10px;font-size:12px;opacity:0.4;z-index:9999;">
-      v1.0.4
+      <div style="position:fixed;bottom:12px;right:12px;font-size:12px;background:#0f172a;color:#ffffff;padding:6px 10px;border-radius:999px;z-index:9999;box-shadow:0 8px 24px rgba(15,23,42,0.18);font-family:system-ui,sans-serif;">
+      v1.0.5
     </div>
   </body>
 </html>
