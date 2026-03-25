@@ -1,109 +1,453 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <!-- VERSION: v1.0.8 - 2026-03-25 - tel/mail stylisés + PDF onglet externe -->
+    <!-- VERSION: v1.0.9 - 2026-03-25 - version complète avec EmailJS + liens contact stylisés -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DECIF & CHALLENGE BAT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      html { scroll-behavior: smooth; }
+      html {
+        scroll-behavior: smooth;
+      }
     </style>
   </head>
   <body class="min-h-screen bg-[#f7f7f5] text-slate-900">
-
-    <!-- Badge version -->
-    <div style="position:fixed;top:14px;right:14px;font-size:12px;background:#0f172a;color:#fff;padding:8px 12px;border-radius:999px;z-index:2147483647;box-shadow:0 10px 30px rgba(15,23,42,0.25);font-family:system-ui;pointer-events:none;">
-      v1.0.8
+    <div style="position:fixed;top:14px;right:14px;font-size:12px;background:#0f172a;color:#ffffff;padding:8px 12px;border-radius:999px;z-index:2147483647;box-shadow:0 10px 30px rgba(15,23,42,0.25);font-family:system-ui,sans-serif;pointer-events:none;">
+      v1.0.9
     </div>
 
     <header class="border-b border-black/5 bg-white/95 backdrop-blur">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <div class="flex items-center gap-4">
           <div class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2 shadow-sm">
-            <img src="https://static.wixstatic.com/media/9c09bd_c5e738afda9746da93b4c2c2a9c66886~mv2.png" class="h-12" />
+            <img
+              src="https://static.wixstatic.com/media/9c09bd_c5e738afda9746da93b4c2c2a9c66886~mv2.png/v1/fill/w_166,h_119,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/DECIF%20PLOMBIER%20CHAUFFAGE.png"
+              alt="Logo DECIF"
+              class="h-12 w-auto object-contain"
+            />
+            <div class="hidden h-10 w-px bg-slate-200 sm:block"></div>
+            <div class="hidden rounded-xl bg-gradient-to-br from-[#d9e8d1] to-[#a8c695] px-4 py-2 text-center shadow-sm sm:block">
+              <div class="text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-700">Challenge</div>
+              <div class="text-lg font-semibold leading-none text-slate-900">BAT</div>
+            </div>
           </div>
           <div>
-            <div class="text-lg font-semibold">DECIF & CHALLENGE BAT</div>
+            <div class="text-lg font-semibold tracking-tight">DECIF &amp; CHALLENGE BAT</div>
             <div class="text-sm text-slate-600">Deux entreprises complémentaires sous une même direction</div>
           </div>
         </div>
-        <a href="#contact" class="rounded-2xl bg-slate-900 px-5 py-3 text-white">Contact</a>
+        <a href="#contact" class="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:opacity-90">
+          Contact
+        </a>
       </div>
     </header>
 
     <main>
-
-      <!-- HERO -->
-      <section class="mx-auto max-w-7xl px-6 py-16">
-        <div class="grid gap-10 lg:grid-cols-2 items-center">
+      <section class="mx-auto max-w-7xl px-6 py-16 md:py-24">
+        <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div>
-            <div class="inline-flex bg-[#fff6ea] px-4 py-2 rounded-full text-sm">OFFRE spéciale Syndic</div>
-            <h1 class="mt-6 text-5xl font-semibold">Contrat d'entretien annuel</h1>
-            <p class="mt-4 text-slate-600">Une offre claire et négociée pour copropriétés.</p>
+            <div class="inline-flex rounded-full border border-[#e3d6c3] bg-[#fff6ea] px-4 py-2 text-sm text-[#9a5b1b] shadow-sm">
+              OFFRE de tarif spéciale Syndic, copro, agences
+            </div>
+            <h1 class="mt-6 max-w-4xl text-4xl font-semibold tracking-tight md:text-6xl">
+              Contrat d'entretien annuel
+            </h1>
+            <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+              Une offre claire et négociée à diffuser facilement aux copropriétaires, avec des tarifs préférentiels en TVA 10 %.
+            </p>
           </div>
 
-          <div class="bg-slate-900 text-white p-6 rounded-3xl">
-            <div>Chaudière basse température</div>
-            <div class="text-3xl">131 € TTC</div>
-
-            <div class="mt-4">Ramonage</div>
-            <div class="text-3xl">69 € TTC</div>
-
-            <div class="mt-4">Chaudière condensation</div>
-            <div class="text-3xl">150 € TTC</div>
-
-            <a href="https://9c09bdff-4d5d-401b-9aa7-6e6874bb2cf7.usrfiles.com/ugd/9c09bd_ed4655a42c86452891ffea9dc3c99ed3.pdf" target="_blank" rel="noopener noreferrer" class="mt-6 inline-block bg-white text-black px-4 py-2 rounded-xl">
-              Voir les conditions du contrat
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- CONTACT -->
-      <section id="contact" class="mx-auto max-w-7xl px-6 py-16">
-        <div class="grid md:grid-cols-2 gap-8">
-
-          <div>
-            <h2 class="text-3xl font-semibold">Demande d'information</h2>
-            <p class="mt-4 text-slate-600">Contactez-nous pour référencer l’offre.</p>
-
-            <div class="mt-6 space-y-3">
-
-              <!-- TELEPHONE -->
-              <div class="flex items-center gap-2 text-sm text-slate-600">
-                <span class="font-medium text-slate-800">Téléphone :</span>
-                <a href="tel:+33146493656" class="flex items-center gap-1 text-slate-900 hover:text-blue-600 transition">
-                  📞 <span class="underline-offset-2 hover:underline">01 46 49 36 56</span>
+          <div class="rounded-[28px] bg-slate-900 p-6 text-white shadow-sm">
+            <div class="text-sm font-medium text-slate-300">Tarifs contrat d'entretien annuel</div>
+            <div class="mt-6 space-y-5">
+              <div>
+                <div class="text-sm text-slate-300">Chaudière basse température</div>
+                <div class="mt-1 text-3xl font-semibold">131 € TTC</div>
+                <div class="text-sm text-slate-400">au lieu de 150 € TTC particulier</div>
+              </div>
+              <div>
+                <div class="text-sm text-slate-300">Ramonage</div>
+                <div class="mt-1 text-3xl font-semibold">69 € TTC</div>
+              </div>
+              <div>
+                <div class="text-sm text-slate-300">Chaudière condensation</div>
+                <div class="mt-1 text-3xl font-semibold">150 € TTC</div>
+                <div class="text-sm text-slate-400">au lieu de 170 € TTC particulier</div>
+              </div>
+              <div class="border-t border-white/10 pt-4">
+                <a href="https://9c09bdff-4d5d-401b-9aa7-6e6874bb2cf7.usrfiles.com/ugd/9c09bd_ed4655a42c86452891ffea9dc3c99ed3.pdf" target="_blank" rel="noopener noreferrer" class="inline-flex rounded-2xl bg-white px-5 py-3 text-sm font-medium text-slate-900 shadow-sm hover:bg-slate-100">
+                  Voir les conditions du contrat
                 </a>
               </div>
-
-              <!-- EMAIL -->
-              <div class="flex items-center gap-2 text-sm text-slate-600">
-                <span class="font-medium text-slate-800">Email :</span>
-                <a href="mailto:contact@decif.fr" class="flex items-center gap-1 text-slate-900 hover:text-blue-600 transition">
-                  ✉️ <span class="underline-offset-2 hover:underline">contact@decif.fr</span>
-                </a>
-              </div>
-
-              <div class="text-sm text-slate-600">Secteur : Paris et Hauts-de-Seine</div>
             </div>
           </div>
-
-          <!-- FORM -->
-          <div class="bg-white p-6 rounded-2xl shadow">
-            <form>
-              <input placeholder="Nom" class="w-full mb-3 border p-2 rounded" />
-              <input placeholder="Email" class="w-full mb-3 border p-2 rounded" />
-              <textarea placeholder="Message" class="w-full mb-3 border p-2 rounded"></textarea>
-              <button class="bg-slate-900 text-white px-4 py-2 rounded">Envoyer</button>
-            </form>
-          </div>
-
         </div>
       </section>
 
+      <section class="mx-auto max-w-7xl px-6 py-8 md:py-16">
+        <div class="grid gap-8 lg:grid-cols-2">
+          <a
+            href="https://www.decif-chauffage-plombier.com/"
+            target="_blank"
+            rel="noreferrer"
+            class="rounded-[28px] bg-white p-8 shadow-sm ring-1 ring-slate-200 transition hover:shadow-md"
+          >
+            <div class="flex items-center gap-4">
+              <img
+                src="https://static.wixstatic.com/media/9c09bd_c5e738afda9746da93b4c2c2a9c66886~mv2.png/v1/fill/w_166,h_119,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/DECIF%20PLOMBIER%20CHAUFFAGE.png"
+                alt="Logo DECIF"
+                class="h-14 w-auto object-contain"
+              />
+              <div>
+                <div class="text-sm font-semibold uppercase tracking-[0.2em] text-[#ef8f22]">DECIF</div>
+                <div class="text-xl font-semibold">Chauffage &amp; plomberie</div>
+              </div>
+            </div>
+            <p class="mt-6 text-sm leading-7 text-slate-600">
+              Entretien chaudières, dépannage, pose de chaudières, ballons d’eau chaude, plomberie, recherche de fuites, sanitaires et salles de bains.
+            </p>
+            <div class="mt-6 inline-flex rounded-2xl bg-[#ef8f22] px-5 py-3 text-sm font-medium text-white">
+              Voir le site DECIF
+            </div>
+          </a>
+
+          <a
+            href="https://www.challengebat.fr/"
+            target="_blank"
+            rel="noreferrer"
+            class="rounded-[28px] bg-white p-8 shadow-sm ring-1 ring-slate-200 transition hover:shadow-md"
+          >
+            <div class="flex items-center gap-4">
+              <div class="rounded-2xl bg-gradient-to-br from-[#dceace] to-[#a7c58f] px-5 py-4 shadow-sm">
+                <div class="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-700">Challenge</div>
+                <div class="mt-1 text-2xl font-semibold leading-none text-slate-900">BAT</div>
+              </div>
+              <div>
+                <div class="text-sm font-semibold uppercase tracking-[0.2em] text-[#6d8f54]">CHALLENGE BAT</div>
+                <div class="text-xl font-semibold">Travaux &amp; rénovation</div>
+              </div>
+            </div>
+            <p class="mt-6 text-sm leading-7 text-slate-600">
+              Rénovation d’appartements, cuisines, salles de bains, remise en état et aménagement intérieur.
+            </p>
+            <div class="mt-6 inline-flex rounded-2xl bg-[#6d8f54] px-5 py-3 text-sm font-medium text-white">
+              Voir le site Challenge Bat
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section id="contact" class="mx-auto max-w-7xl px-6 py-8 md:py-16">
+        <div class="rounded-[34px] bg-white p-8 shadow-sm ring-1 ring-slate-200 md:p-10">
+          <div class="grid gap-8 md:grid-cols-2 md:items-start">
+            <div>
+              <div class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Contact</div>
+              <h2 class="mt-3 text-3xl font-semibold tracking-tight">Demande d'information</h2>
+              <p class="mt-4 leading-7 text-slate-600">
+                Pour référencer l’offre dans un immeuble, demander un devis ou transmettre des documents, utilisez le formulaire ci-contre.
+              </p>
+              <div class="mt-6 space-y-4 text-sm text-slate-600">
+                <div class="flex items-center gap-2">
+                  <span class="font-medium text-slate-800">Téléphone :</span>
+                  <a href="tel:+33146493656" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-slate-900 transition hover:border-blue-300 hover:text-blue-600 hover:shadow-sm">
+                    <span aria-hidden="true">📞</span>
+                    <span class="underline-offset-2 hover:underline">01 46 49 36 56</span>
+                  </a>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="font-medium text-slate-800">Email :</span>
+                  <a href="mailto:contact@decif.fr" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-slate-900 transition hover:border-blue-300 hover:text-blue-600 hover:shadow-sm">
+                    <span aria-hidden="true">✉️</span>
+                    <span class="underline-offset-2 hover:underline">contact@decif.fr</span>
+                  </a>
+                </div>
+                <div><span class="font-medium text-slate-800">Secteur :</span> Paris et Hauts-de-Seine</div>
+              </div>
+            </div>
+
+            <div class="rounded-[28px] bg-[#f7f7f5] p-6 ring-1 ring-slate-200">
+              <form id="contact-form" class="space-y-4">
+                <div class="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <label for="name" class="mb-2 block text-sm font-medium text-slate-700">Nom</label>
+                    <input id="name" name="name" type="text" required class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-500" placeholder="Nom" />
+                  </div>
+                  <div>
+                    <label for="company" class="mb-2 block text-sm font-medium text-slate-700">Société</label>
+                    <input id="company" name="company" type="text" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-500" placeholder="Syndic, copropriété, agence" />
+                  </div>
+                </div>
+                <div class="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <label for="phone" class="mb-2 block text-sm font-medium text-slate-700">Téléphone</label>
+                    <input id="phone" name="phone" type="tel" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-500" placeholder="Téléphone" />
+                  </div>
+                  <div>
+                    <label for="email" class="mb-2 block text-sm font-medium text-slate-700">Email</label>
+                    <input id="email" name="email" type="email" required class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-500" placeholder="Email" />
+                  </div>
+                </div>
+                <div>
+                  <label for="message" class="mb-2 block text-sm font-medium text-slate-700">Message</label>
+                  <textarea id="message" name="message" required class="min-h-[140px] w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-500" placeholder="Votre demande"></textarea>
+                </div>
+
+                <input type="hidden" name="files_notice" id="files_notice" value="Aucune pièce jointe" />
+
+                <div>
+                  <label for="attachment" class="mb-2 block text-sm font-medium text-slate-700">Pièces jointes</label>
+                  <input id="attachment" type="file" accept="image/*,.pdf" multiple class="block w-full text-sm text-slate-600 file:mr-4 file:rounded-2xl file:border-0 file:bg-slate-900 file:px-4 file:py-3 file:text-sm file:font-medium file:text-white hover:file:opacity-90" />
+                  <div id="attachment-summary" class="mt-2 text-xs text-slate-500">Vous pouvez joindre jusqu’à 3 fichiers. Les images sont compressées avant l’envoi. Pour les PDF, restez idéalement sous 150 Ko. Poids total conseillé : moins de 220 Ko après préparation.</div>
+                  <div id="emailjs-attachments" class="hidden"></div>
+                </div>
+                <div class="flex flex-wrap gap-3 pt-2">
+                  <button id="submit-button" type="submit" class="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70">
+                    Envoyer la demande
+                  </button>
+                </div>
+                <p id="status" class="hidden rounded-2xl px-4 py-3 text-sm font-medium"></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+      const APP_VERSION = "v1.0.9";
+      console.log("App version:", APP_VERSION);
+    </script>
+    <script>
+      emailjs.init({
+        publicKey: "42fcs_J7GqnWNi7BU"
+      });
+
+      const form = document.getElementById("contact-form");
+      const submitButton = document.getElementById("submit-button");
+      const status = document.getElementById("status");
+      const attachmentInput = document.getElementById("attachment");
+      const attachmentSummary = document.getElementById("attachment-summary");
+      const emailjsAttachments = document.getElementById("emailjs-attachments");
+      const filesNotice = document.getElementById("files_notice");
+
+      const MAX_FILES = 3;
+      const MAX_TOTAL_BYTES = 220 * 1024;
+      const MAX_PDF_BYTES = 150 * 1024;
+      const MAX_IMAGE_SIDE = 1600;
+      const IMAGE_QUALITY = 0.72;
+
+      function showStatus(message, type) {
+        status.textContent = message;
+        status.classList.remove(
+          "hidden",
+          "bg-red-50",
+          "text-red-700",
+          "ring-1",
+          "ring-red-200",
+          "bg-emerald-50",
+          "text-emerald-700",
+          "ring-emerald-200",
+          "bg-slate-100",
+          "text-slate-700",
+          "ring-slate-200"
+        );
+
+        if (type === "success") {
+          status.classList.add("bg-emerald-50", "text-emerald-700", "ring-1", "ring-emerald-200");
+        } else if (type === "error") {
+          status.classList.add("bg-red-50", "text-red-700", "ring-1", "ring-red-200");
+        } else {
+          status.classList.add("bg-slate-100", "text-slate-700", "ring-1", "ring-slate-200");
+        }
+      }
+
+      function bytesToKo(bytes) {
+        return Math.max(1, Math.round(bytes / 1024));
+      }
+
+      function dataUrlToFile(dataUrl, filename, mimeType) {
+        const arr = dataUrl.split(",");
+        const mime = mimeType || arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], filename, { type: mime });
+      }
+
+      function fileToDataUrl(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function loadImage(file) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          const url = URL.createObjectURL(file);
+          img.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve(img);
+          };
+          img.onerror = (error) => {
+            URL.revokeObjectURL(url);
+            reject(error);
+          };
+          img.src = url;
+        });
+      }
+
+      async function compressImage(file) {
+        const img = await loadImage(file);
+        const canvas = document.createElement("canvas");
+        let { width, height } = img;
+
+        if (width > MAX_IMAGE_SIDE || height > MAX_IMAGE_SIDE) {
+          const ratio = Math.min(MAX_IMAGE_SIDE / width, MAX_IMAGE_SIDE / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d", { alpha: false });
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const mimeType = file.type === "image/png" ? "image/jpeg" : (file.type || "image/jpeg");
+        const dataUrl = canvas.toDataURL(mimeType === "image/png" ? "image/jpeg" : mimeType, IMAGE_QUALITY);
+        const newName = file.name.replace(/\.(png|webp)$/i, ".jpg");
+        return dataUrlToFile(dataUrl, newName, mimeType === "image/png" ? "image/jpeg" : mimeType);
+      }
+
+      async function normalizeFiles(fileList) {
+        const files = Array.from(fileList || []).slice(0, MAX_FILES);
+        const normalized = [];
+
+        for (const file of files) {
+          if (file.type === "application/pdf" && file.size > MAX_PDF_BYTES) {
+            const error = new Error("PDF_TOO_LARGE");
+            error.fileName = file.name;
+            throw error;
+          }
+
+          if (file.type.startsWith("image/")) {
+            normalized.push(await compressImage(file));
+          } else {
+            normalized.push(file);
+          }
+        }
+
+        return normalized;
+      }
+
+      async function prepareEmailjsAttachments(files) {
+        emailjsAttachments.innerHTML = "";
+
+        if (!files.length) {
+          filesNotice.value = "Aucune pièce jointe";
+          attachmentSummary.textContent = "Aucun fichier sélectionné.";
+          return [];
+        }
+
+        const normalized = await normalizeFiles(files);
+        const totalBytes = normalized.reduce((sum, file) => sum + file.size, 0);
+
+        if (totalBytes > MAX_TOTAL_BYTES) {
+          throw new Error("TOTAL_TOO_LARGE");
+        }
+
+        for (const file of normalized) {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = "my_file[]";
+          input.value = await fileToDataUrl(file);
+          emailjsAttachments.appendChild(input);
+        }
+
+        filesNotice.value = normalized.map((file) => `${file.name} (${bytesToKo(file.size)} Ko)`).join(", ");
+        attachmentSummary.textContent = `${normalized.length} fichier(s) prêt(s) pour l’envoi - poids total encodé : ${bytesToKo(totalBytes)} Ko. Recommandé : rester sous ${bytesToKo(MAX_TOTAL_BYTES)} Ko.`;
+        return normalized;
+      }
+
+      attachmentInput.addEventListener("change", async function () {
+        try {
+          showStatus("Préparation des pièces jointes...", "info");
+          const files = Array.from(attachmentInput.files || []);
+
+          if (files.length > MAX_FILES) {
+            showStatus(`Vous pouvez envoyer jusqu’à ${MAX_FILES} fichiers maximum.`, "error");
+            attachmentInput.value = "";
+            emailjsAttachments.innerHTML = "";
+            filesNotice.value = "Aucune pièce jointe";
+            attachmentSummary.textContent = "Vous pouvez joindre jusqu’à 3 fichiers. Les images sont compressées avant l’envoi. Pour les PDF, restez idéalement sous 150 Ko. Poids total conseillé : moins de 220 Ko après préparation.";
+            return;
+          }
+
+          await prepareEmailjsAttachments(files);
+          if (files.length) {
+            showStatus(`Pièces jointes prêtes. Gardez idéalement moins de ${bytesToKo(MAX_TOTAL_BYTES)} Ko au total, et moins de ${bytesToKo(MAX_PDF_BYTES)} Ko par PDF.`, "success");
+          } else {
+            status.classList.add("hidden");
+          }
+        } catch (error) {
+          console.error(error);
+          emailjsAttachments.innerHTML = "";
+          filesNotice.value = "Aucune pièce jointe";
+          if (error.message === "PDF_TOO_LARGE") {
+            showStatus(`Le PDF est trop lourd pour EmailJS. Essayez de rester sous ${bytesToKo(MAX_PDF_BYTES)} Ko ou utilisez le bouton email.`, "error");
+            attachmentSummary.textContent = `PDF refusé : ${error.fileName || "fichier"}. Pour les PDF, restez idéalement sous ${bytesToKo(MAX_PDF_BYTES)} Ko.`;
+          } else if (error.message === "TOTAL_TOO_LARGE") {
+            showStatus("Les pièces jointes sont trop lourdes pour EmailJS après encodage. Essayez une image plus légère ou un PDF plus petit.", "error");
+            attachmentSummary.textContent = `Poids total maximal conseillé après préparation : ${bytesToKo(MAX_TOTAL_BYTES)} Ko. Les PDF grossissent encore à l’envoi.`;
+          } else {
+            showStatus("Impossible de préparer les pièces jointes.", "error");
+          }
+        }
+      });
+
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        if (window.location.protocol === "file:") {
+          showStatus("Le formulaire ne peut pas être testé correctement en ouvrant le HTML en local. Lancez-le via un serveur web.", "error");
+          return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Envoi en cours...";
+        showStatus("Envoi en cours...", "info");
+
+        try {
+          await prepareEmailjsAttachments(attachmentInput.files);
+          await emailjs.sendForm("service_g906wal", "template_f4u1fmk", form);
+          showStatus("Votre demande a bien été envoyée.", "success");
+          form.reset();
+          emailjsAttachments.innerHTML = "";
+          filesNotice.value = "Aucune pièce jointe";
+          attachmentSummary.textContent = "Vous pouvez joindre jusqu’à 3 fichiers. Les images sont compressées avant l’envoi. Pour les PDF, restez idéalement sous 150 Ko. Poids total conseillé : moins de 220 Ko après préparation.";
+        } catch (error) {
+          console.error(error);
+          if (error.message === "PDF_TOO_LARGE") {
+            showStatus(`Ce PDF est trop lourd pour EmailJS. Restez sous ${bytesToKo(MAX_PDF_BYTES)} Ko ou utilisez le bouton email.`, "error");
+          } else if (error.message === "TOTAL_TOO_LARGE") {
+            showStatus("Les pièces jointes sont trop lourdes pour EmailJS après encodage. Réduisez leur taille ou utilisez le bouton email.", "error");
+          } else {
+            showStatus("Erreur lors de l’envoi. Vérifiez le template EmailJS et la taille des pièces jointes.", "error");
+          }
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = "Envoyer la demande";
+        }
+      });
+    </script>
   </body>
 </html>
