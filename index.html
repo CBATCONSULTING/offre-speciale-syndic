@@ -178,10 +178,14 @@
                   <label for="message" class="mb-2 block text-sm font-medium text-slate-700">Message</label>
                   <textarea id="message" name="message" required class="min-h-[140px] w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-500" placeholder="Votre demande"></textarea>
                 </div>
+
+                <input type="hidden" name="files_notice" id="files_notice" value="Aucune pièce jointe" />
+
                 <div>
                   <label for="attachment" class="mb-2 block text-sm font-medium text-slate-700">Pièces jointes</label>
-                  <input id="attachment" type="file" multiple class="block w-full text-sm text-slate-600 file:mr-4 file:rounded-2xl file:border-0 file:bg-slate-900 file:px-4 file:py-3 file:text-sm file:font-medium file:text-white hover:file:opacity-90" />
-                  <p class="mt-2 text-xs text-slate-500">Le champ reste visible pour l’utilisateur, mais les fichiers ne partent pas via EmailJS avec cette implémentation.</p>
+                  <input id="attachment" type="file" accept="image/*,.pdf" multiple class="block w-full text-sm text-slate-600 file:mr-4 file:rounded-2xl file:border-0 file:bg-slate-900 file:px-4 file:py-3 file:text-sm file:font-medium file:text-white hover:file:opacity-90" />
+                  <div id="attachment-summary" class="mt-2 text-xs text-slate-500">Vous pouvez joindre jusqu’à 3 fichiers. Les images sont compressées avant l’envoi. Les PDF restent limités par la taille totale.</div>
+                  <div id="emailjs-attachments" class="hidden"></div>
                 </div>
                 <div class="flex flex-wrap gap-3 pt-2">
                   <button id="submit-button" type="submit" class="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70">
@@ -207,10 +211,30 @@
       const submitButton = document.getElementById("submit-button");
       const status = document.getElementById("status");
       const attachmentInput = document.getElementById("attachment");
+      const attachmentSummary = document.getElementById("attachment-summary");
+      const emailjsAttachments = document.getElementById("emailjs-attachments");
+      const filesNotice = document.getElementById("files_notice");
+
+      const MAX_FILES = 3;
+      const MAX_TOTAL_BYTES = 480 * 1024;
+      const MAX_IMAGE_SIDE = 1600;
+      const IMAGE_QUALITY = 0.72;
 
       function showStatus(message, type) {
         status.textContent = message;
-        status.classList.remove("hidden", "bg-red-50", "text-red-700", "ring-1", "ring-red-200", "bg-emerald-50", "text-emerald-700", "ring-emerald-200", "bg-slate-100", "text-slate-700", "ring-slate-200");
+        status.classList.remove(
+          "hidden",
+          "bg-red-50",
+          "text-red-700",
+          "ring-1",
+          "ring-red-200",
+          "bg-emerald-50",
+          "text-emerald-700",
+          "ring-emerald-200",
+          "bg-slate-100",
+          "text-slate-700",
+          "ring-slate-200"
+        );
 
         if (type === "success") {
           status.classList.add("bg-emerald-50", "text-emerald-700", "ring-1", "ring-emerald-200");
@@ -221,6 +245,148 @@
         }
       }
 
+      function bytesToKo(bytes) {
+        return Math.max(1, Math.round(bytes / 1024));
+      }
+
+      function dataUrlToFile(dataUrl, filename, mimeType) {
+        const arr = dataUrl.split(",");
+        const mime = mimeType || arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], filename, { type: mime });
+      }
+
+      function fileToDataUrl(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function loadImage(file) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          const url = URL.createObjectURL(file);
+          img.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve(img);
+          };
+          img.onerror = (error) => {
+            URL.revokeObjectURL(url);
+            reject(error);
+          };
+          img.src = url;
+        });
+      }
+
+      async function compressImage(file) {
+        const img = await loadImage(file);
+        const canvas = document.createElement("canvas");
+        let { width, height } = img;
+
+        if (width > MAX_IMAGE_SIDE || height > MAX_IMAGE_SIDE) {
+          const ratio = Math.min(MAX_IMAGE_SIDE / width, MAX_IMAGE_SIDE / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d", { alpha: false });
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const mimeType = file.type === "image/png" ? "image/jpeg" : (file.type || "image/jpeg");
+        const dataUrl = canvas.toDataURL(mimeType === "image/png" ? "image/jpeg" : mimeType, IMAGE_QUALITY);
+        const newName = file.name.replace(/\.(png|webp)$/i, ".jpg");
+        return dataUrlToFile(dataUrl, newName, mimeType === "image/png" ? "image/jpeg" : mimeType);
+      }
+
+      async function normalizeFiles(fileList) {
+        const files = Array.from(fileList || []).slice(0, MAX_FILES);
+        const normalized = [];
+
+        for (const file of files) {
+          if (file.type.startsWith("image/")) {
+            normalized.push(await compressImage(file));
+          } else {
+            normalized.push(file);
+          }
+        }
+
+        return normalized;
+      }
+
+      async function prepareEmailjsAttachments(files) {
+        emailjsAttachments.innerHTML = "";
+
+        if (!files.length) {
+          filesNotice.value = "Aucune pièce jointe";
+          attachmentSummary.textContent = "Aucun fichier sélectionné.";
+          return [];
+        }
+
+        const normalized = await normalizeFiles(files);
+        const totalBytes = normalized.reduce((sum, file) => sum + file.size, 0);
+
+        if (totalBytes > MAX_TOTAL_BYTES) {
+          throw new Error("TOTAL_TOO_LARGE");
+        }
+
+        for (const file of normalized) {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = "my_file[]";
+          input.value = await fileToDataUrl(file);
+          emailjsAttachments.appendChild(input);
+        }
+
+        filesNotice.value = normalized.map((file) => `${file.name} (${bytesToKo(file.size)} Ko)`).join(", ");
+        attachmentSummary.textContent = `${normalized.length} fichier(s) prêt(s) pour l’envoi - poids total : ${bytesToKo(totalBytes)} Ko.`;
+        return normalized;
+      }
+
+      attachmentInput.addEventListener("change", async function () {
+        try {
+          showStatus("Préparation des pièces jointes...", "info");
+          const files = Array.from(attachmentInput.files || []);
+
+          if (files.length > MAX_FILES) {
+            showStatus(`Vous pouvez envoyer jusqu’à ${MAX_FILES} fichiers maximum.`, "error");
+            attachmentInput.value = "";
+            emailjsAttachments.innerHTML = "";
+            filesNotice.value = "Aucune pièce jointe";
+            attachmentSummary.textContent = "Vous pouvez joindre jusqu’à 3 fichiers. Les images sont compressées avant l’envoi. Les PDF restent limités par la taille totale.";
+            return;
+          }
+
+          await prepareEmailjsAttachments(files);
+          if (files.length) {
+            showStatus("Pièces jointes prêtes pour l’envoi.", "success");
+          } else {
+            status.classList.add("hidden");
+          }
+        } catch (error) {
+          console.error(error);
+          emailjsAttachments.innerHTML = "";
+          filesNotice.value = "Aucune pièce jointe";
+          if (error.message === "TOTAL_TOO_LARGE") {
+            showStatus("Les pièces jointes sont trop lourdes. Réduisez leur taille ou envoyez-les par email direct.", "error");
+            attachmentSummary.textContent = `Poids total maximal conseillé : ${bytesToKo(MAX_TOTAL_BYTES)} Ko.`;
+          } else {
+            showStatus("Impossible de préparer les pièces jointes.", "error");
+          }
+        }
+      });
+
       form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
@@ -229,22 +395,25 @@
           return;
         }
 
-        if (attachmentInput.files.length > 0) {
-          showStatus("Les pièces jointes ne sont pas envoyées par cette version du formulaire. Utilisez plutôt le bouton email pour joindre vos fichiers.", "error");
-          return;
-        }
-
         submitButton.disabled = true;
         submitButton.textContent = "Envoi en cours...";
         showStatus("Envoi en cours...", "info");
 
         try {
+          await prepareEmailjsAttachments(attachmentInput.files);
           await emailjs.sendForm("service_g906wal", "template_f4u1fmk", form);
           showStatus("Votre demande a bien été envoyée.", "success");
           form.reset();
+          emailjsAttachments.innerHTML = "";
+          filesNotice.value = "Aucune pièce jointe";
+          attachmentSummary.textContent = "Vous pouvez joindre jusqu’à 3 fichiers. Les images sont compressées avant l’envoi. Les PDF restent limités par la taille totale.";
         } catch (error) {
           console.error(error);
-          showStatus("Erreur lors de l’envoi. Vérifiez votre template EmailJS et testez la page via un vrai serveur web.", "error");
+          if (error.message === "TOTAL_TOO_LARGE") {
+            showStatus("Les pièces jointes sont trop lourdes pour EmailJS. Réduisez leur taille ou utilisez le bouton email.", "error");
+          } else {
+            showStatus("Erreur lors de l’envoi. Vérifiez le template EmailJS et la taille des pièces jointes.", "error");
+          }
         } finally {
           submitButton.disabled = false;
           submitButton.textContent = "Envoyer la demande";
